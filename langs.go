@@ -24,6 +24,18 @@ var All = []string{
 	RU,
 }
 
+var native = map[string]string{
+	"CA": "català",
+	"DE": "deutsch",
+	"EN": "english",
+	"ES": "español",
+	"FR": "français",
+	"IT": "italiano",
+	"JA": "日本" ,
+	"PT": "portugues",
+	"RU": "русский",
+}
+
 func IsValid(lang string) bool {
 	for _, l := range All {
 		if l == lang {
@@ -31,4 +43,8 @@ func IsValid(lang string) bool {
 		}
 	}
 	return false
+}
+
+func NativeNames(lang string) string {
+	return native[lang]
 }

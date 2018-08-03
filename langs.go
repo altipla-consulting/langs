@@ -25,14 +25,14 @@ var All = []string{
 }
 
 var native = map[string]string{
-	"CA": "català",
-	"DE": "deutsch",
-	"EN": "english",
-	"ES": "español",
-	"FR": "français",
-	"IT": "italiano",
-	"JA": "日本" ,
-	"PT": "portugues",
+	"CA": "Català",
+	"DE": "Deutsch",
+	"EN": "English",
+	"ES": "Español",
+	"FR": "Français",
+	"IT": "Italiano",
+	"JA": "日本語" ,
+	"PT": "Portugues",
 	"RU": "русский",
 }
 
@@ -45,6 +45,6 @@ func IsValid(lang string) bool {
 	return false
 }
 
-func NativeNames(lang string) string {
+func NativeName(lang string) string {
 	return native[lang]
 }

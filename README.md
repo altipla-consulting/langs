@@ -1,6 +1,8 @@
 
 # langs
 
+> **DEPRECATED:** Use https://github.com/altipla-consulting/libs instead.
+
 [![GoDoc](https://godoc.org/github.com/altipla-consulting/langs?status.svg)](https://godoc.org/github.com/altipla-consulting/langs)
 [![Build Status](https://travis-ci.org/altipla-consulting/langs.svg?branch=master)](https://travis-ci.org/altipla-consulting/langs)
 

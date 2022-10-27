@@ -33,6 +33,8 @@ func NewContentFromMap(values map[Lang]string) Content {
 	}
 }
 
+// ParseContent reads a new content map parsing every language name to check if
+// it's correct. It only returns an error for invalid languages.
 func ParseContent(values map[string]string) (Content, error) {
 	content := NewContent()
 	for lang, value := range values {
@@ -146,4 +148,23 @@ func (content *Content) UnmarshalJSON(b []byte) error {
 
 	content.v = v
 	return nil
+}
+
+// Map returns a map of every language of the content and its value.
+func (content Content) Map() map[Lang]string {
+	c := make(map[Lang]string)
+	for k, v := range content.v {
+		c[k] = v
+	}
+	return c
+}
+
+// PlainMap returns a map of every language of the content and its value in a
+// format that can be serialized to protobufs.
+func (content Content) PlainMap() map[string]string {
+	c := make(map[string]string)
+	for k, v := range content.v {
+		c[string(k)] = v
+	}
+	return c
 }

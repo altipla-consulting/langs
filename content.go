@@ -1,6 +1,7 @@
 package langs
 
 import (
+	"database/sql/driver"
 	"encoding/json"
 	"fmt"
 )
@@ -167,4 +168,25 @@ func (content Content) PlainMap() map[string]string {
 		c[string(k)] = v
 	}
 	return c
+}
+
+func (content *Content) Scan(value interface{}) error {
+	if value == nil {
+		return nil
+	}
+	switch value.(type) {
+	case []byte:
+		return json.Unmarshal(value.([]byte), &content.v)
+	case string:
+		return json.Unmarshal([]byte(value.(string)), &content.v)
+	default:
+		return fmt.Errorf("sqltypes: unknown content type %T", value)
+	}
+}
+
+func (content Content) Value() (driver.Value, error) {
+	if content.v == nil {
+		return "{}", nil
+	}
+	return json.Marshal(content)
 }

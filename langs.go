@@ -36,16 +36,16 @@ var All = []Lang{
 }
 
 var native = map[Lang]string{
-	"CA": "Català",
-	"DE": "Deutsch",
-	"EN": "English",
-	"ES": "Español",
-	"EU": "Euskera",
-	"FR": "Français",
-	"IT": "Italiano",
-	"JA": "日本語",
-	"PT": "Portugues",
-	"RU": "русский",
+	"ca": "Català",
+	"de": "Deutsch",
+	"en": "English",
+	"es": "Español",
+	"eu": "Euskera",
+	"fr": "Français",
+	"it": "Italiano",
+	"ja": "日本語",
+	"pt": "Portugues",
+	"ru": "русский",
 }
 
 // IsValid checks if the lang code is a known one.

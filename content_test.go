@@ -98,3 +98,17 @@ func TestContentSaveLoad(t *testing.T) {
 	require.Equal(t, content.Get(ES), "es-content")
 	require.Equal(t, content.Get(EN), "en-content")
 }
+
+func TestContentSetEmpty(t *testing.T) {
+	content := NewContentFromMap(map[Lang]string{
+		ES: "es-content",
+		EN: "en-content",
+	})
+	content.Set(ES, "")
+	require.Empty(t, content.Get(ES), "")
+	require.Equal(t, content.Get(EN), "en-content")
+
+	require.Equal(t, content.PlainMap(), map[string]string{
+		"en": "en-content",
+	})
+}

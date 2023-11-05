@@ -27,9 +27,9 @@ func TestContentValue(t *testing.T) {
 	db := connectDB(t)
 	defer db.Close()
 
-	content := NewContentFromMap(map[string]string{
-		ES.Code: "es-content",
-		EN.Code: "en-content",
+	content := NewContentFromMap(map[Lang]string{
+		ES: "es-content",
+		EN: "en-content",
 	})
 	_, err := db.Exec("INSERT INTO test_content (name, value) VALUES (?, ?)", "foo", content)
 	require.NoError(t, err)
@@ -64,8 +64,8 @@ func TestContentScan(t *testing.T) {
 	var content Content
 	require.NoError(t, db.QueryRow("SELECT value FROM test_content WHERE name = ?", "foo").Scan(&content))
 
-	require.Equal(t, content.Get(ES.Code), "es-content")
-	require.Equal(t, content.Get(EN.Code), "en-content")
+	require.Equal(t, content.Get(ES), "es-content")
+	require.Equal(t, content.Get(EN), "en-content")
 }
 
 func TestContentScanNil(t *testing.T) {
@@ -85,9 +85,9 @@ func TestContentSaveLoad(t *testing.T) {
 	db := connectDB(t)
 	defer db.Close()
 
-	content := NewContentFromMap(map[string]string{
-		ES.Code: "es-content",
-		EN.Code: "en-content",
+	content := NewContentFromMap(map[Lang]string{
+		ES: "es-content",
+		EN: "en-content",
 	})
 	_, err := db.Exec("INSERT INTO test_content (name, value) VALUES (?, ?)", "foo", content)
 	require.NoError(t, err)
@@ -95,6 +95,30 @@ func TestContentSaveLoad(t *testing.T) {
 	var other Content
 	require.NoError(t, db.QueryRow("SELECT value FROM test_content WHERE name = ?", "foo").Scan(&other))
 
-	require.Equal(t, content.Get(ES.Code), "es-content")
-	require.Equal(t, content.Get(EN.Code), "en-content")
+	require.Equal(t, content.Get(ES), "es-content")
+	require.Equal(t, content.Get(EN), "en-content")
+}
+
+func TestContentSetEmpty(t *testing.T) {
+	content := NewContentFromMap(map[Lang]string{
+		ES: "es-content",
+		EN: "en-content",
+	})
+	content.Set(ES, "")
+	require.Empty(t, content.Get(ES), "")
+	require.Equal(t, content.Get(EN), "en-content")
+
+	require.Equal(t, content.PlainMap(), map[string]string{
+		"en": "en-content",
+	})
+}
+
+func TestParseContent(t *testing.T) {
+	content, err := ParseContent(map[string]string{
+		"es": "es-content",
+		"en": "en-content",
+	})
+	require.NoError(t, err)
+	require.Equal(t, content.Get(ES), "es-content")
+	require.Equal(t, content.Get(EN), "en-content")
 }

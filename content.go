@@ -12,7 +12,7 @@ import (
 // It can be serialized to JSON to send it to a client application. It can also
 // be used with libs.altipla.consulting/rdb.
 type Content struct {
-	v map[string]string
+	v map[Lang]string
 }
 
 // NewContent returns an empty content without any values.
@@ -23,12 +23,12 @@ func NewContent() Content {
 // NewContentValue builds a new content with a single translated value.
 func NewContentValue(lang Lang, value string) Content {
 	content := NewContent()
-	content.Set(lang.Code, value)
+	content.Set(lang, value)
 	return content
 }
 
 // NewContentFromMap builds a new content from a map containing one or multiple values.
-func NewContentFromMap(values map[string]string) Content {
+func NewContentFromMap(values map[Lang]string) Content {
 	return Content{
 		v: values,
 	}
@@ -42,20 +42,25 @@ func ParseContent(values map[string]string) (Content, error) {
 		if !IsValid(lang) {
 			return Content{}, fmt.Errorf("unknown lang %q", lang)
 		}
-		content.Set(lang, value)
+		for _, la := range All {
+			if la.Code == lang {
+				content.Set(la, value)
+				break
+			}
+		}
 	}
 	return content, nil
 }
 
 func (content *Content) init() {
 	if content.v == nil {
-		content.v = make(map[string]string)
+		content.v = make(map[Lang]string)
 	}
 }
 
 // Set changes the translated value of a language. If empty that language will be
 // discarded from the content.
-func (content *Content) Set(lang string, value string) {
+func (content *Content) Set(lang Lang, value string) {
 	content.init()
 	if value == "" {
 		delete(content.v, lang)
@@ -65,7 +70,7 @@ func (content *Content) Set(lang string, value string) {
 }
 
 // Get returns the translated value for a language or empty if not present.
-func (content Content) Get(lang string) string {
+func (content Content) Get(lang Lang) string {
 	if content.v == nil {
 		return ""
 	}
@@ -78,7 +83,7 @@ func (content Content) IsEmpty() bool {
 }
 
 // Clear removes a specific language translated value.
-func (content *Content) Clear(lang string) {
+func (content *Content) Clear(lang Lang) {
 	content.init()
 	delete(content.v, lang)
 }
@@ -107,7 +112,7 @@ func NewChain(fallbacks ...Lang) Chain {
 // 3. Return any lang available randomly to have something.
 //
 // If the content is empty it returns an empty string.
-func (content Content) GetChain(chain Chain, lang string) string {
+func (content Content) GetChain(chain Chain, lang Lang) string {
 	if content.IsEmpty() {
 		return ""
 	}
@@ -118,7 +123,7 @@ func (content Content) GetChain(chain Chain, lang string) string {
 	}
 
 	for _, l := range chain.fallbacks {
-		value, ok := content.v[l.Code]
+		value, ok := content.v[l]
 		if ok {
 			return value
 		}
@@ -135,14 +140,14 @@ func (content Content) GetChain(chain Chain, lang string) string {
 func (content Content) MarshalJSON() ([]byte, error) {
 	v := content.v
 	if v == nil {
-		v = make(map[string]string)
+		v = make(map[Lang]string)
 	}
 	return json.Marshal(v)
 }
 
 // UnmarshalJSON implements the JSON interface.
 func (content *Content) UnmarshalJSON(b []byte) error {
-	v := make(map[string]string)
+	v := make(map[Lang]string)
 	if err := json.Unmarshal(b, &v); err != nil {
 		return fmt.Errorf("cannot unmarshal langs: %w", err)
 	}
@@ -152,8 +157,8 @@ func (content *Content) UnmarshalJSON(b []byte) error {
 }
 
 // Map returns a map of every language of the content and its value.
-func (content Content) Map() map[string]string {
-	c := make(map[string]string)
+func (content Content) Map() map[Lang]string {
+	c := make(map[Lang]string)
 	for k, v := range content.v {
 		c[k] = v
 	}
@@ -165,7 +170,7 @@ func (content Content) Map() map[string]string {
 func (content Content) PlainMap() map[string]string {
 	c := make(map[string]string)
 	for k, v := range content.v {
-		c[string(k)] = v
+		c[k.Code] = v
 	}
 	return c
 }

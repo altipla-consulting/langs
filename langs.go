@@ -14,6 +14,33 @@ func (lang Lang) String() string {
 	return lang.Code
 }
 
+func (lang Lang) MarshalJSON() ([]byte, error) {
+	return []byte(fmt.Sprintf(`"%s"`, lang.Code)), nil
+}
+
+func (lang *Lang) UnmarshalJSON(b []byte) error {
+	code := string(b[1 : len(b)-1])
+	for _, l := range All {
+		if l.Code == code {
+			*lang = l
+		}
+	}
+	return nil
+}
+
+func (lang Lang) MarshalText() ([]byte, error) {
+	return []byte(lang.Code), nil
+}
+
+func (lang *Lang) UnmarshalText(text []byte) error {
+	for _, l := range All {
+		if l.Code == string(text) {
+			*lang = l
+		}
+	}
+	return nil
+}
+
 var (
 	CA = Lang{Code: "ca", Native: "Català", Group: "ca"}
 	DE = Lang{Code: "de", Native: "Deutsch", Group: "de"}
@@ -44,29 +71,14 @@ var All = []Lang{
 // IsValid checks if the lang code is a known one.
 func IsValid(lang string) bool {
 	for _, l := range All {
-		if string(l.Code) == lang {
+		if l.Code == lang {
 			return true
 		}
 	}
 	return false
 }
 
-// NativeName returns the native name of the language.
-func NativeName(lang string) (string, error) {
-	for _, l := range All {
-		if string(l.Code) == lang {
-			return l.Native, nil
-		}
-	}
-	return "", fmt.Errorf("unknown lang %q", lang)
-}
-
-// LangGroup returns the group of the language.
-func LangGroup(lang string) (string, error) {
-	for _, l := range All {
-		if string(l.Code) == lang {
-			return l.Group, nil
-		}
-	}
-	return "", fmt.Errorf("unknown lang %q", lang)
+// Deprecated: use Lang.Native instead.
+func NativeName(lang Lang) string {
+	return lang.Native
 }

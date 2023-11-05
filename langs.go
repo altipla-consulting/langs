@@ -1,24 +1,30 @@
 package langs
 
-// Lang represents a language code.
-type Lang string
+import "fmt"
+
+// Lang represents a language
+type Lang struct {
+	Code   string
+	Native string
+	Group  string
+}
 
 // String returns the code of the language as string.
 func (lang Lang) String() string {
-	return string(lang)
+	return lang.Code
 }
 
-const (
-	CA = Lang("ca")
-	DE = Lang("de")
-	EN = Lang("en")
-	ES = Lang("es")
-	EU = Lang("eu")
-	FR = Lang("fr")
-	IT = Lang("it")
-	JA = Lang("ja")
-	PT = Lang("pt")
-	RU = Lang("ru")
+var (
+	CA = Lang{Code: "ca", Native: "Català", Group: "ca"}
+	DE = Lang{Code: "de", Native: "Deutsch", Group: "de"}
+	EN = Lang{Code: "en", Native: "English", Group: "en"}
+	ES = Lang{Code: "es", Native: "Español", Group: "es"}
+	EU = Lang{Code: "eu", Native: "Euskera", Group: "eu"}
+	FR = Lang{Code: "fr", Native: "Français", Group: "fr"}
+	IT = Lang{Code: "it", Native: "Italiano", Group: "it"}
+	JA = Lang{Code: "ja", Native: "日本語", Group: "ja"}
+	PT = Lang{Code: "pt", Native: "Portugues", Group: "pt"}
+	RU = Lang{Code: "ru", Native: "Русский", Group: "ru"}
 )
 
 // All contains all the known languages of this library.
@@ -35,23 +41,10 @@ var All = []Lang{
 	RU,
 }
 
-var native = map[Lang]string{
-	"CA": "Català",
-	"DE": "Deutsch",
-	"EN": "English",
-	"ES": "Español",
-	"EU": "Euskera",
-	"FR": "Français",
-	"IT": "Italiano",
-	"JA": "日本語",
-	"PT": "Portugues",
-	"RU": "русский",
-}
-
 // IsValid checks if the lang code is a known one.
 func IsValid(lang string) bool {
 	for _, l := range All {
-		if string(l) == lang {
+		if string(l.Code) == lang {
 			return true
 		}
 	}
@@ -59,6 +52,21 @@ func IsValid(lang string) bool {
 }
 
 // NativeName returns the native name of the language.
-func NativeName(lang Lang) string {
-	return native[lang]
+func NativeName(lang string) (string, error) {
+	for _, l := range All {
+		if string(l.Code) == lang {
+			return l.Native, nil
+		}
+	}
+	return "", fmt.Errorf("unknown lang %q", lang)
+}
+
+// LangGroup returns the group of the language.
+func LangGroup(lang string) (string, error) {
+	for _, l := range All {
+		if string(l.Code) == lang {
+			return l.Group, nil
+		}
+	}
+	return "", fmt.Errorf("unknown lang %q", lang)
 }

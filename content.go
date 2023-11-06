@@ -122,34 +122,12 @@ func (content Content) GetChain(chain Chain, lang Lang) string {
 		return value
 	}
 
-	for _, l := range All {
-		if l == lang {
-			for _, la := range All {
-				if la.Group == l.Group {
-					value, ok := content.v[la]
-					if ok {
-						return value
-					}
-				}
+	fullchain := append([]Lang{lang}, chain.fallbacks...)
+	for _, l := range fullchain {
+		for k := range content.v {
+			if k.Group == l.Group {
+				return content.v[k]
 			}
-		}
-	}
-
-	for _, l := range chain.fallbacks {
-		for _, la := range All {
-			if la.Group == l.Group {
-				value, ok := content.v[la]
-				if ok {
-					return value
-				}
-			}
-		}
-	}
-
-	for _, l := range chain.fallbacks {
-		value, ok := content.v[l]
-		if ok {
-			return value
 		}
 	}
 

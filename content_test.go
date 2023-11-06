@@ -122,3 +122,37 @@ func TestParseContent(t *testing.T) {
 	require.Equal(t, content.Get(ES), "es-content")
 	require.Equal(t, content.Get(EN), "en-content")
 }
+
+func TestGetChainDirect(t *testing.T) {
+	content := NewContentFromMap(map[Lang]string{
+		ES: "es-content",
+		EN: "en-content",
+	})
+	chain := NewChain(EN, ES)
+
+	require.Equal(t, content.GetChain(chain, ES), "es-content")
+	require.Equal(t, content.GetChain(chain, EN), "en-content")
+	require.Equal(t, content.GetChain(chain, PT), "en-content")
+}
+
+func TestGetChainGroup(t *testing.T) {
+	content := NewContentFromMap(map[Lang]string{
+		ES: "es-content",
+		EN: "en-content",
+	})
+	chain := NewChain(ES)
+
+	require.Equal(t, content.GetChain(chain, ES), "es-content")
+	require.Equal(t, content.GetChain(chain, EnGB), "en-content")
+}
+
+func TestGetChainInversedGroup(t *testing.T) {
+	content := NewContentFromMap(map[Lang]string{
+		ES:   "es-content",
+		EnGB: "en-content",
+	})
+	chain := NewChain(EN, ES)
+
+	require.Equal(t, content.GetChain(chain, EN), "en-content")
+	require.Equal(t, content.GetChain(chain, PT), "en-content")
+}

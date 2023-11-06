@@ -42,7 +42,12 @@ func ParseContent(values map[string]string) (Content, error) {
 		if !IsValid(lang) {
 			return Content{}, fmt.Errorf("unknown lang %q", lang)
 		}
-		content.Set(Lang(lang), value)
+		for _, la := range All {
+			if la.Code == lang {
+				content.Set(la, value)
+				break
+			}
+		}
 	}
 	return content, nil
 }
@@ -165,7 +170,7 @@ func (content Content) Map() map[Lang]string {
 func (content Content) PlainMap() map[string]string {
 	c := make(map[string]string)
 	for k, v := range content.v {
-		c[string(k)] = v
+		c[k.Code] = v
 	}
 	return c
 }

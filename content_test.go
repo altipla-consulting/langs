@@ -112,3 +112,13 @@ func TestContentSetEmpty(t *testing.T) {
 		"en": "en-content",
 	})
 }
+
+func TestParseContent(t *testing.T) {
+	content, err := ParseContent(map[string]string{
+		"es": "es-content",
+		"en": "en-content",
+	})
+	require.NoError(t, err)
+	require.Equal(t, content.Get(ES), "es-content")
+	require.Equal(t, content.Get(EN), "en-content")
+}

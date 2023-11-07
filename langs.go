@@ -88,6 +88,16 @@ func IsValid(lang string) bool {
 	return false
 }
 
+// Parse returns the Lang for a given language.
+func Parse(lang string) (Lang, error) {
+	for _, l := range All {
+		if l.Code == lang {
+			return l, nil
+		}
+	}
+	return Lang{}, fmt.Errorf("unknown lang: %s", lang)
+}
+
 // Deprecated: use Lang.Native instead.
 func NativeName(lang Lang) string {
 	return lang.Native

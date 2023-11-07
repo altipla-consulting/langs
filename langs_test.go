@@ -48,3 +48,11 @@ func TestLangJSONUnmarshal(t *testing.T) {
 		EN: "en-content",
 	})
 }
+
+func TestLangParse(t *testing.T) {
+	lang, _ := Parse("es")
+	require.Equal(t, ES, lang)
+
+	_, err := Parse("foo")
+	require.EqualError(t, err, "unknown lang: foo")
+}

@@ -52,6 +52,11 @@ var (
 	JA = Lang{Code: "ja", Native: "日本語", Group: "ja"}
 	PT = Lang{Code: "pt", Native: "Portugues", Group: "pt"}
 	RU = Lang{Code: "ru", Native: "Русский", Group: "ru"}
+
+	EsES = Lang{Code: "es-ES", Native: "Español", Group: "es"}
+	EnGB = Lang{Code: "en-GB", Native: "English", Group: "en"}
+	EnUS = Lang{Code: "en-US", Native: "English", Group: "en"}
+	FrFR = Lang{Code: "fr-FR", Native: "Français", Group: "fr"}
 )
 
 // All contains all the known languages of this library.
@@ -66,6 +71,11 @@ var All = []Lang{
 	JA,
 	PT,
 	RU,
+
+	EsES,
+	EnGB,
+	EnUS,
+	FrFR,
 }
 
 // IsValid checks if the lang code is a known one.

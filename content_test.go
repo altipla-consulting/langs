@@ -122,3 +122,51 @@ func TestParseContent(t *testing.T) {
 	require.Equal(t, content.Get(ES), "es-content")
 	require.Equal(t, content.Get(EN), "en-content")
 }
+
+func TestGetChainSimple(t *testing.T) {
+	content := NewContentFromMap(map[Lang]string{
+		ES: "es-content",
+		EN: "en-content",
+	})
+	chain := NewChain(EN, ES)
+
+	require.Equal(t, content.GetChain(chain, ES), "es-content")
+	require.Equal(t, content.GetChain(chain, EN), "en-content")
+	require.Equal(t, content.GetChain(chain, PT), "en-content")
+}
+
+func TestGetChainAskSameGroup(t *testing.T) {
+	content := NewContentFromMap(map[Lang]string{
+		ES: "es-content",
+		EN: "en-content",
+	})
+	chain := NewChain(ES)
+
+	require.Equal(t, content.GetChain(chain, ES), "es-content")
+	require.Equal(t, content.GetChain(chain, EnGB), "en-content")
+}
+
+func TestGetChainAskGenericSameGroup(t *testing.T) {
+	content := NewContentFromMap(map[Lang]string{
+		ES:   "es-content",
+		EnGB: "en-content",
+	})
+	chain := NewChain(EN, ES)
+
+	require.Equal(t, content.GetChain(chain, EN), "en-content")
+	require.Equal(t, content.GetChain(chain, PT), "en-content")
+}
+
+func TestGetChainSameGroupTwice(t *testing.T) {
+	content := NewContentFromMap(map[Lang]string{
+		ES:   "es-content",
+		EnGB: "en-content",
+		FR:   "fr-content",
+	})
+	chain := NewChain(EnGB, FR, EnUS)
+
+	require.Equal(t, content.GetChain(chain, EN), "en-content")
+	require.Equal(t, content.GetChain(chain, EnGB), "en-content")
+	require.Equal(t, content.GetChain(chain, EnUS), "en-content")
+	require.Equal(t, content.GetChain(chain, PT), "en-content")
+}

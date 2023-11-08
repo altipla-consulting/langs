@@ -1,6 +1,19 @@
 package langs
 
-import "fmt"
+import (
+	"database/sql"
+	"database/sql/driver"
+	"encoding"
+	"encoding/json"
+	"fmt"
+)
+
+var _ json.Marshaler = Lang{}
+var _ json.Unmarshaler = (*Lang)(nil)
+var _ encoding.TextMarshaler = Lang{}
+var _ encoding.TextUnmarshaler = (*Lang)(nil)
+var _ sql.Scanner = (*Lang)(nil)
+var _ driver.Valuer = Lang{}
 
 // Lang represents a language
 type Lang struct {
@@ -39,6 +52,25 @@ func (lang *Lang) UnmarshalText(text []byte) error {
 		}
 	}
 	return nil
+}
+
+// Value implements driver.Valuer.
+func (lang Lang) Value() (driver.Value, error) {
+	return lang.Code, nil
+}
+
+// Scan implements sql.Scanner.
+func (lang *Lang) Scan(src any) error {
+	if src == nil {
+		return fmt.Errorf("langs: cannot scan nil into %T", lang)
+	}
+	switch src := src.(type) {
+	case []byte:
+		return lang.UnmarshalText(src)
+	case string:
+		return lang.UnmarshalText([]byte(src))
+	}
+	return fmt.Errorf("langs: cannot scan %T into %T", src, lang)
 }
 
 var (

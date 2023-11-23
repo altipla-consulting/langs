@@ -110,8 +110,6 @@ var All = []Lang{
 	EnGB,
 	EnUS,
 	FrFR,
-
-	Empty,
 }
 
 // IsValid checks if the lang code is a known one.
@@ -124,12 +122,9 @@ func IsValid(lang string) bool {
 	return false
 }
 
-// Empty checks if the lang is empty.
+// Empty returns if the lang is empty.
 func (l *Lang) Empty(lang Lang) bool {
-	if lang.Code == "" {
-		return true
-	}
-	return false
+	return lang == Empty
 }
 
 // Parse returns the Lang for a given language.

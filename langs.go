@@ -89,6 +89,8 @@ var (
 	EnGB = Lang{Code: "en-GB", Native: "English", Group: "en"}
 	EnUS = Lang{Code: "en-US", Native: "English", Group: "en"}
 	FrFR = Lang{Code: "fr-FR", Native: "Français", Group: "fr"}
+
+	Empty = Lang{}
 )
 
 // All contains all the known languages of this library.
@@ -118,6 +120,11 @@ func IsValid(lang string) bool {
 		}
 	}
 	return false
+}
+
+// Empty returns if the lang is empty.
+func (l *Lang) Empty(lang Lang) bool {
+	return lang == Empty
 }
 
 // Parse returns the Lang for a given language.

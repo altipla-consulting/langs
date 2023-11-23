@@ -123,8 +123,8 @@ func IsValid(lang string) bool {
 }
 
 // Empty returns if the lang is empty.
-func (l *Lang) Empty(lang Lang) bool {
-	return lang == Empty
+func (l Lang) Empty() bool {
+	return l == Empty
 }
 
 // Parse returns the Lang for a given language.

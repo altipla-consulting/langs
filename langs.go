@@ -120,6 +120,14 @@ func IsValid(lang string) bool {
 	return false
 }
 
+// IsEmpty checks if the lang is empty.
+func IsEmpty(lang Lang) bool {
+	if lang.Code == "" {
+		return true
+	}
+	return false
+}
+
 // Parse returns the Lang for a given language.
 func Parse(lang string) (Lang, error) {
 	for _, l := range All {

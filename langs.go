@@ -89,6 +89,8 @@ var (
 	EnGB = Lang{Code: "en-GB", Native: "English", Group: "en"}
 	EnUS = Lang{Code: "en-US", Native: "English", Group: "en"}
 	FrFR = Lang{Code: "fr-FR", Native: "Français", Group: "fr"}
+
+	Empty = Lang{}
 )
 
 // All contains all the known languages of this library.
@@ -108,6 +110,8 @@ var All = []Lang{
 	EnGB,
 	EnUS,
 	FrFR,
+
+	Empty,
 }
 
 // IsValid checks if the lang code is a known one.
@@ -120,8 +124,8 @@ func IsValid(lang string) bool {
 	return false
 }
 
-// IsEmpty checks if the lang is empty.
-func IsEmpty(lang Lang) bool {
+// Empty checks if the lang is empty.
+func (l *Lang) Empty(lang Lang) bool {
 	if lang.Code == "" {
 		return true
 	}

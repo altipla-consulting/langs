@@ -6,6 +6,7 @@ import (
 	"encoding"
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 
 var _ json.Marshaler = Lang{}
@@ -34,7 +35,7 @@ func (lang Lang) MarshalJSON() ([]byte, error) {
 func (lang *Lang) UnmarshalJSON(b []byte) error {
 	code := string(b[1 : len(b)-1])
 	for _, l := range All {
-		if l.Code == code {
+		if strings.EqualFold(l.Code, code) {
 			*lang = l
 		}
 	}
@@ -47,7 +48,7 @@ func (lang Lang) MarshalText() ([]byte, error) {
 
 func (lang *Lang) UnmarshalText(text []byte) error {
 	for _, l := range All {
-		if l.Code == string(text) {
+		if strings.EqualFold(l.Code, string(text)) {
 			*lang = l
 		}
 	}
@@ -115,7 +116,7 @@ var All = []Lang{
 // IsValid checks if the lang code is a known one.
 func IsValid(lang string) bool {
 	for _, l := range All {
-		if l.Code == lang {
+		if strings.EqualFold(l.Code, lang) {
 			return true
 		}
 	}
@@ -130,7 +131,7 @@ func (l Lang) Empty() bool {
 // Parse returns the Lang for a given language.
 func Parse(lang string) (Lang, error) {
 	for _, l := range All {
-		if l.Code == lang {
+		if strings.EqualFold(l.Code, lang) {
 			return l, nil
 		}
 	}

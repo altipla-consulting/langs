@@ -9,6 +9,46 @@ import (
 	"strings"
 )
 
+var (
+	CA   = Lang{Code: "ca", Native: "Català", Group: "ca"}
+	DE   = Lang{Code: "de", Native: "Deutsch", Group: "de"}
+	DeDE = Lang{Code: "de-DE", Native: "Deutsch", Group: "de"}
+	EN   = Lang{Code: "en", Native: "English", Group: "en"}
+	EnGB = Lang{Code: "en-GB", Native: "English", Group: "en"}
+	EnUS = Lang{Code: "en-US", Native: "English", Group: "en"}
+	ES   = Lang{Code: "es", Native: "Español", Group: "es"}
+	EsES = Lang{Code: "es-ES", Native: "Español", Group: "es"}
+	EU   = Lang{Code: "eu", Native: "Euskera", Group: "eu"}
+	FR   = Lang{Code: "fr", Native: "Français", Group: "fr"}
+	FrFR = Lang{Code: "fr-FR", Native: "Français", Group: "fr"}
+	IT   = Lang{Code: "it", Native: "Italiano", Group: "it"}
+	JA   = Lang{Code: "ja", Native: "日本語", Group: "ja"}
+	PT   = Lang{Code: "pt", Native: "Portugues", Group: "pt"}
+	PtPT = Lang{Code: "pt-PT", Native: "Portugues", Group: "pt"}
+	RU   = Lang{Code: "ru", Native: "Русский", Group: "ru"}
+
+	Empty = Lang{}
+)
+
+// All contains all the known languages of this library.
+var All = []Lang{
+	CA,
+	DE,
+	EN,
+	ES,
+	EU,
+	FR,
+	IT,
+	JA,
+	PT,
+	RU,
+
+	EsES,
+	EnGB,
+	EnUS,
+	FrFR,
+}
+
 var _ json.Marshaler = Lang{}
 var _ json.Unmarshaler = (*Lang)(nil)
 var _ encoding.TextMarshaler = Lang{}
@@ -72,45 +112,6 @@ func (lang *Lang) Scan(src any) error {
 		return lang.UnmarshalText([]byte(src))
 	}
 	return fmt.Errorf("langs: cannot scan %T into %T", src, lang)
-}
-
-var (
-	CA = Lang{Code: "ca", Native: "Català", Group: "ca"}
-	DE = Lang{Code: "de", Native: "Deutsch", Group: "de"}
-	EN = Lang{Code: "en", Native: "English", Group: "en"}
-	ES = Lang{Code: "es", Native: "Español", Group: "es"}
-	EU = Lang{Code: "eu", Native: "Euskera", Group: "eu"}
-	FR = Lang{Code: "fr", Native: "Français", Group: "fr"}
-	IT = Lang{Code: "it", Native: "Italiano", Group: "it"}
-	JA = Lang{Code: "ja", Native: "日本語", Group: "ja"}
-	PT = Lang{Code: "pt", Native: "Portugues", Group: "pt"}
-	RU = Lang{Code: "ru", Native: "Русский", Group: "ru"}
-
-	EsES = Lang{Code: "es-ES", Native: "Español", Group: "es"}
-	EnGB = Lang{Code: "en-GB", Native: "English", Group: "en"}
-	EnUS = Lang{Code: "en-US", Native: "English", Group: "en"}
-	FrFR = Lang{Code: "fr-FR", Native: "Français", Group: "fr"}
-
-	Empty = Lang{}
-)
-
-// All contains all the known languages of this library.
-var All = []Lang{
-	CA,
-	DE,
-	EN,
-	ES,
-	EU,
-	FR,
-	IT,
-	JA,
-	PT,
-	RU,
-
-	EsES,
-	EnGB,
-	EnUS,
-	FrFR,
 }
 
 // IsValid checks if the lang code is a known one.

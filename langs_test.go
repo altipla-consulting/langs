@@ -54,5 +54,5 @@ func TestLangParse(t *testing.T) {
 	require.Equal(t, ES, lang)
 
 	_, err := Parse("foo")
-	require.EqualError(t, err, "unknown lang: foo")
+	require.EqualError(t, err, `langs: unknown code "foo"`)
 }

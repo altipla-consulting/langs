@@ -34,19 +34,20 @@ var (
 var All = []Lang{
 	CA,
 	DE,
+	DeDE,
 	EN,
+	EnGB,
+	EnUS,
 	ES,
+	EsES,
 	EU,
 	FR,
+	FrFR,
 	IT,
 	JA,
 	PT,
+	PtPT,
 	RU,
-
-	EsES,
-	EnGB,
-	EnUS,
-	FrFR,
 }
 
 var _ json.Marshaler = Lang{}

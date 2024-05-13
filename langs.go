@@ -136,7 +136,7 @@ func Parse(lang string) (Lang, error) {
 			return l, nil
 		}
 	}
-	return Lang{}, fmt.Errorf("unknown lang: %s", lang)
+	return Lang{}, fmt.Errorf("langs: unknown code %q", lang)
 }
 
 // Deprecated: use Lang.Native instead.

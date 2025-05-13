@@ -22,6 +22,7 @@ var (
 	FR   = Lang{Code: "fr", Native: "Français", Group: "fr"}
 	FrFR = Lang{Code: "fr-FR", Native: "Français", Group: "fr"}
 	IT   = Lang{Code: "it", Native: "Italiano", Group: "it"}
+	ItIT = Lang{Code: "it-IT", Native: "Italiano", Group: "it"}
 	JA   = Lang{Code: "ja", Native: "日本語", Group: "ja"}
 	PT   = Lang{Code: "pt", Native: "Portugues", Group: "pt"}
 	PtPT = Lang{Code: "pt-PT", Native: "Portugues", Group: "pt"}
@@ -44,6 +45,7 @@ var All = []Lang{
 	FR,
 	FrFR,
 	IT,
+	ItIT,
 	JA,
 	PT,
 	PtPT,
